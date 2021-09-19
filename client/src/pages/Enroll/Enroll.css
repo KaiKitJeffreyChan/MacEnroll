@@ -1,0 +1,47 @@
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+  --color-dark: #212121;
+  --color-signal: #fab700;
+  
+  --color-background: #ffebf5;
+  --color-text: var(--color-dark);
+  --color-accent: var(--color-signal);
+  
+  --size-bezel: .5rem;
+  --size-radius: 4px;
+  
+  line-height: 1.4;
+  
+  font-family: 'Inter', sans-serif;
+  font-size: calc(.6rem + .4vw);
+  color: var(--color-text);
+  font-weight: 300;
+
+}
+
+.space{
+  padding: 0.5rem 0rem;
+}
+
+.card {
+  margin-left: 1.5rem;
+  background: var(--color-background);
+  padding: calc(7 * var(--size-bezel));
+  margin-top: calc(4 * var(--size-bezel));
+  border-radius: var(--size-radius);
+  border: 3px solid var(--color-shadow, currentColor);
+  box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
+
+  /* display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: calc(100vh - 180px);
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  } */
+}
+
+.hidden {
+  display: none;
+}

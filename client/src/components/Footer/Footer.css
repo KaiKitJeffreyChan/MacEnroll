@@ -1,0 +1,31 @@
+.grid-3-col {
+  padding: 2rem 3rem;
+  width: min(100%);
+  display: grid;
+  color: white;
+  grid-auto-flow: 33% 33% 33%;
+  gap: 1em;
+}
+
+.column {
+  margin: auto;
+  text-align: center;
+}
+
+.footer-main {
+  background-color: #7a003d;
+}
+
+@media (min-width: 1200px) {
+  .grid-3-col {
+    grid-auto-flow: column;
+  }
+  .column {
+    margin: 5rem;
+  }
+}
+
+.footer-links {
+  color: white;
+  text-decoration: none;
+}
