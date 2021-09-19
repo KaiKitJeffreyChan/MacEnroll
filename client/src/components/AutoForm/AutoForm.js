@@ -5,7 +5,7 @@ import "./AutoForm.css"
 const AutoForm = ({ updateData }) => {
   return (
     <div>
-      <h1 className="space">Register______________</h1>
+      <h1 className="space">Register  ______________</h1>
       <p className="space">As this website is still new, please follow the instructions on the Home page closley to ensure your course enrollment process goes smoothly. Thanks!</p>
       <Formik
         initialValues={{
@@ -14,16 +14,17 @@ const AutoForm = ({ updateData }) => {
           semester: "",
           phonenumber: "",
           email: "",
+          othernumbers: ""
         }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           await new Promise((r) => setTimeout(r, 500));
           alert(JSON.stringify(values, null, 2));
           updateData(values);
+          resetForm({ values: "" });
         }}
       >
         <div className='form-content-left'>
           <Form>
-
             <label htmlFor="username" className='input'>
               <Field id="username" className='input__field' name="username" type='text' />
               <span class="input__label">Username</span>
@@ -42,6 +43,11 @@ const AutoForm = ({ updateData }) => {
               <span class="input__label">Email</span>
             </label>
 
+            <label htmlFor="othernumbers" className='input'>
+              <Field id="othernumbers" className='input__field' name="othernumbers" type="email" />
+              <span class="input__label">Friends Phone Number(s) (Separated by commas)</span>
+            </label>
+
             <label htmlFor="semester" className='input'>
               <label className="prettyText">Semester</label>
               <Field as="select" name="semester" className="dropdown">
@@ -52,7 +58,7 @@ const AutoForm = ({ updateData }) => {
 
             </label>
 
-            <button className='form-input-btn' type="submit">Submit</button>
+            <button className='form-input-btn' type="submit" >Submit</button>
           </Form>
         </div>
       </Formik>

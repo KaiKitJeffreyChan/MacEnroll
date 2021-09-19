@@ -37,27 +37,28 @@ course_required_args.add_argument(
     "semester", type=str, help="The semester is required", required=True)
 
 course_required_args.add_argument(
+    "othernumbers", type=str, help="friends numbers", required=False)
+course_required_args.add_argument(
     "clear", type=bool, help="To clear all users", required=False)
-
-#optional for timed course request
+    
+#optional for timed course request make it so if timed, then all other are required
 course_required_args.add_argument(
-    "time", type=bool, help="The semester is required", required=False)
+    "time", type=bool, help="Add a time to the enrollment?", required=False)
 course_required_args.add_argument(
-    "year", type=int, help="The semester is required", required=False)
+    "year", type=int, help="year", required=False)
 course_required_args.add_argument(
-    "month", type=int, help="The semester is required", required=False)
+    "month", type=int, help="month", required=False)
 course_required_args.add_argument(
-    "day", type=int, help="The semester is required", required=False)
+    "day", type=int, help="day", required=False)
 course_required_args.add_argument(
-    "hour", type=int, help="The semester is required", required=False)
+    "hour", type=int, help="hour", required=False)
 course_required_args.add_argument(
-    "min", type=int, help="The semester is required", required=False)
+    "min", type=int, help="min", required=False)
 
 userData = {}
 
-def checkCourse(user, user_password, targetNum, semester, difference=False):
+def checkCourse(user, user_password, targetNum, semester, difference=False, greeting=False):
     targetNum = ("+1" + targetNum)
-
     try:
         if(difference):
             time.sleep(difference)
@@ -131,6 +132,14 @@ def checkCourse(user, user_password, targetNum, semester, difference=False):
                     '//*[@id="selectedtab"]/a').click() 
             print("Tried to enroll")
             # checks every 5 min
+            if (greeting == False):
+                client = Client("ACee67b8e063a7969f04bddacd4c28cfc9",AUTH)
+                message = client.messages.create(
+                    body="Your course selection process is working fine! If you ever want to cancel this automation request, simply visit the Enroll page to stop. Thanks for using MacEnroll!",
+                    from_="+14702605227",
+                    to=targetNum
+                )
+                greeting = True
             time.sleep(300)
         driver.quit()
     except:
@@ -167,7 +176,7 @@ class Courses(Resource):
                     difference = (b-a).total_seconds()
             
                     t = threading.Thread(target=checkCourse, args=(
-                        args["user"], args["pass"], args["target_num"], args["semester"], difference,))
+                        args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"], difference, ))
                     t.start()
                     print(t.native_id)
                     userData[args["user"]] = t.native_id
@@ -180,7 +189,7 @@ class Courses(Resource):
                 return "You have already registered a course", 200
             else:
                 t = threading.Thread(target=checkCourse, args=(
-                    args["user"], args["pass"], args["target_num"], args["semester"],))
+                    args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"]))
                 t.start()
                 print(t.native_id)
                 userData[args["user"]] = t.native_id

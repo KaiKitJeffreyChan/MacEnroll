@@ -11,6 +11,7 @@ const Enroll = ({ shift }) => {
     semester: "",
     phonenumber: "",
     email: "",
+    othernumbers: ""
   });
 
   const updateData = (info) => {
@@ -20,6 +21,7 @@ const Enroll = ({ shift }) => {
       semester: info.semester,
       phonenumber: info.phonenumber,
       email: info.email,
+      othernumbers: info.numbers,
     });
     return axios
       .post("http://192.168.86.73:80/courses", {
@@ -27,6 +29,7 @@ const Enroll = ({ shift }) => {
         pass: data.password,
         target_num: data.phonenumber,
         semester: data.semester,
+        othernumbers: data.othernumbers
       })
       .then(
         (response) => {
@@ -38,18 +41,6 @@ const Enroll = ({ shift }) => {
       );
   };
 
-  const getCourseInfo = () => {
-    return axios
-      .get("http://172.16.224.149:5000/courses")
-      .then((data) => {
-        console.log(data);
-        return data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <div className={shift ? "blur" : null}>
@@ -59,10 +50,8 @@ const Enroll = ({ shift }) => {
               <AutoForm updateData={updateData}></AutoForm>
               <RightContainer></RightContainer>
             </div>
-
             <div class="card">
             </div>
-
           </Container>
         </Section>
       </div>
@@ -101,12 +90,10 @@ const LeftContainer = styled.div`
     border-radius: 5px;
     padding: 50px;
     margin: 10px;
-
     h1 {
       margin-bottom: 1rem;
       font-size: clamp(1.5rem, 6vw, 2rem);
     }
-
     p {
       margin-bottom: 2rem;
       line-height: 1.8;

@@ -15,10 +15,10 @@ export const SidebarData = [
     icon: <AiIcons.AiOutlineForm />,
     cName: "nav-text",
   },
-  {
-    title: "Reviews",
-    path: "/contact",
-    icon: <FaIcons.FaPenFancy />,
-    cName: "nav-text",
-  },
+  // {
+  //   title: "Reviews",
+  //   path: "/contact",
+  //   icon: <FaIcons.FaPenFancy />,
+  //   cName: "nav-text",
+  // },
 ];
