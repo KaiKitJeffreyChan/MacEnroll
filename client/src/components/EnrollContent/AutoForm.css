@@ -34,7 +34,7 @@ label{
 }
 
 .form-input-btn {
-    margin: 30px;
+    margin-top: 30px;
     color: white;
     padding: var(--size-bezel) calc(var(--size-bezel) * 3);
     background: #a10050;
@@ -59,4 +59,18 @@ label{
 .prettyText{
     font-weight: bold;
     line-height: 1.2;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 0;
+    float:right;
+}
+
+.bottomrightspace{
+    margin-top: 8rem;
+
+
+}
+
+.space{
+    margin: 1rem 0rem;
 }

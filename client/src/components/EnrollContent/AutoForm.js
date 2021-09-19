@@ -1,5 +1,7 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
 import "./AutoForm.css"
 
 const AutoForm = ({ updateData }) => {
@@ -44,19 +46,36 @@ const AutoForm = ({ updateData }) => {
             </label>
 
             <label htmlFor="othernumbers" className='input'>
-              <Field id="othernumbers" className='input__field' name="othernumbers" type="email" />
+              <Field id="othernumbers" className='input__field' name="othernumbers" type="text" />
               <span class="input__label">Friends Phone Number(s) (Separated by commas)</span>
             </label>
 
-            <label htmlFor="semester" className='input'>
-              <label className="prettyText">Semester</label>
-              <Field as="select" name="semester" className="dropdown">
-                <option value=""></option>
-                <option value="winter">Winter</option>
-                <option value="fall">Fall</option>
-              </Field>
+            <div className="prettyText">
+              <label htmlFor="semester" className='input'>
+                <label>Semester</label>
+                <Field as="select" name="semester" className="dropdown">
+                  <option value=""></option>
+                  <option value="winter">Winter</option>
+                  <option value="fall">Fall</option>
+                </Field>
+              </label>
+            </div>
 
-            </label>
+
+            <Stack component="form" noValidate spacing={3} >
+              <TextField
+                id="datetime-local"
+                type="datetime-local"
+                defaultValue="2021-09-16T10:30"
+
+                sx={{ width: "50%", border: "solid 2px", borderRadius: "5px" }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+
+              />
+            </Stack>
+
 
             <button className='form-input-btn' type="submit" >Submit</button>
           </Form>

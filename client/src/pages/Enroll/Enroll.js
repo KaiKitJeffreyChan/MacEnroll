@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Enroll.css";
-import AutoForm from "../../components/AutoForm/AutoForm";
+import AutoForm from "../../components/EnrollContent/AutoForm";
+import EditForm from "../../components/EnrollContent/EditForm"
 import styled from "styled-components"
+// import Bear from "../../images/bear1.png"
 
 const Enroll = ({ shift }) => {
   const [data, setData] = useState({
@@ -21,7 +23,7 @@ const Enroll = ({ shift }) => {
       semester: info.semester,
       phonenumber: info.phonenumber,
       email: info.email,
-      othernumbers: info.numbers,
+      othernumbers: info.othernumbers,
     });
     return axios
       .post("http://192.168.86.73:80/courses", {
@@ -48,9 +50,12 @@ const Enroll = ({ shift }) => {
           <Container>
             <div class="card">
               <AutoForm updateData={updateData}></AutoForm>
-              <RightContainer></RightContainer>
+              {/* <img src={Bear} className="bear" id="bear" alt="bear"></img> */}
             </div>
             <div class="card">
+              <EditForm>
+
+              </EditForm>
             </div>
           </Container>
         </Section>

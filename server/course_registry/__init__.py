@@ -57,7 +57,11 @@ course_required_args.add_argument(
 
 userData = {}
 
-def checkCourse(user, user_password, targetNum, semester, difference=False, greeting=False):
+def checkCourse(user, user_password, targetNum, semester, othernumbers=None, difference=False, greeting=False):
+    if (othernumbers != None):
+        othernumbers_fixed = othernumbers.split(",")
+        print(othernumbers_fixed)
+        #fix the multiple messages text 
     targetNum = ("+1" + targetNum)
     try:
         if(difference):
@@ -165,7 +169,6 @@ class Courses(Resource):
     def post(self):
         args = course_required_args.parse_args()
         if(args["time"]):
-            print("in time")
             if (args["user"] in userData.keys()):
                 return "You have already registered a course", 200
             else:
@@ -178,7 +181,6 @@ class Courses(Resource):
                     t = threading.Thread(target=checkCourse, args=(
                         args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"], difference, ))
                     t.start()
-                    print(t.native_id)
                     userData[args["user"]] = t.native_id
                     return "new thread created", 201
                 except:
@@ -190,8 +192,7 @@ class Courses(Resource):
             else:
                 t = threading.Thread(target=checkCourse, args=(
                     args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"]))
-                t.start()
-                print(t.native_id)
+                t.start()       
                 userData[args["user"]] = t.native_id
                 return "new thread created", 201 
 
