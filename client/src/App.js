@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home/Home";
 import Enroll from "./pages/Enroll/Enroll";
@@ -14,11 +14,11 @@ const App = () => {
     <>
       <Router>
         <Sidebar toggleShift={toggleShift} shift={shift} />
-        <Switch>
-          <Route path="/" exact component={() => <Home shift={shift} />} />
-          <Route path="/enroll" component={() => <Enroll shift={shift} />} />
-          <Route path="/contact" component={Contact} />
-        </Switch>
+        <Routes>
+          <Route path="/" exact element={<Home shift={shift} />} />
+          <Route path="/enroll" element={<Enroll shift={shift} />} />
+          <Route path="/contact" element={Contact} />
+        </Routes>
       </Router>
     </>
   );

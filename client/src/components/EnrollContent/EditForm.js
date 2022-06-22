@@ -1,13 +1,13 @@
 import React from 'react'
 import axios from "axios";
 import { Formik, Field, Form } from "formik";
-import "./EditForm.css"
+import "./AutoForm.css"
 
 const EditForm = () => {
     const deleteUser = ({ user }) => {
         console.log(user)
         return axios
-            .delete(`http://192.168.86.73:80/courses/${user}`)
+            .delete(`http://172.17.137.120:80/courses/${user}`)
             .then(
                 (response) => {
                     console.log(response);
@@ -42,7 +42,7 @@ const EditForm = () => {
                     </Form>
                 </div>
             </Formik>
-            <h1 className="bottomrightspace">Check  ______________</h1>
+            <h1 className="bottomrightspace">Check  _________________</h1>
             <p className="space">Enter your MacID to get an update via SMS and Email!</p>
             <Formik
                 initialValues={{

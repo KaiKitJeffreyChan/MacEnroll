@@ -1,5 +1,4 @@
 import ImageOne from "../../images/wood.jpg";
-import ImageTwo from "../../images/school.jpg";
 import ImageThree from "../../images/posing.jpg";
 import { Link } from "react-router-dom";
 

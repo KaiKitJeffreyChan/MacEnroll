@@ -32,12 +32,10 @@ course_required_args.add_argument(
 course_required_args.add_argument(
     "pass", type=str, help="Password is required", required=True)
 course_required_args.add_argument(
-    "target_num", type=str, help="Your phone number is required", required=True)
+    "target_num", type=str, help="Your phone number is required", required=False)
 course_required_args.add_argument(
     "semester", type=str, help="The semester is required", required=True)
 
-course_required_args.add_argument(
-    "othernumbers", type=str, help="friends numbers", required=False)
 course_required_args.add_argument(
     "clear", type=bool, help="To clear all users", required=False)
     
@@ -57,19 +55,14 @@ course_required_args.add_argument(
 
 userData = {}
 
-def checkCourse(user, user_password, targetNum, semester, othernumbers=None, difference=False, greeting=False):
-    if (othernumbers != None):
-        othernumbers_fixed = othernumbers.split(",")
-        print(othernumbers_fixed)
-        #fix the multiple messages text 
-    targetNum = ("+1" + targetNum)
+def checkCourse(user, user_password, targetNum, semester, difference=False, greeting=True):
     try:
         if(difference):
             time.sleep(difference)
 
         chrome_options = Options()
         chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--headless")
         driver = webdriver.Chrome(
             ChromeDriverManager().install(), options=chrome_options)
         driver.get(
@@ -84,7 +77,9 @@ def checkCourse(user, user_password, targetNum, semester, othernumbers=None, dif
         print("Entered password")
 
         driver.find_element_by_name('Submit').click()
-        driver.find_element_by_xpath('//*[@id="MCM_IMG_CLASS$10"]').click()
+
+
+        driver.find_element_by_id('PTNUI_LAND_REC14$0_row_10').click()
         print("Navigating to enroll section")
 
         # press enroll top left
@@ -93,7 +88,7 @@ def checkCourse(user, user_password, targetNum, semester, othernumbers=None, dif
         driver.find_element_by_id('DERIVED_SSS_SCR_SSS_LINK_ANCHOR3').click()
 
         if(semester == "winter"):
-            driver.find_element_by_id('SSR_DUMMY_RECV1$sels$1$$0').click()
+            driver.find_element_by_id('SSR_DUMMY_RECV1$sels$2$$0').click()
         else:
             driver.find_element_by_id('SSR_DUMMY_RECV1$sels$0$$0').click()
 
@@ -103,8 +98,11 @@ def checkCourse(user, user_password, targetNum, semester, othernumbers=None, dif
 
         #checking if both user and the original thread is still in dictionary
         #otherwise skip out of loop and quit the driver
+        
+
         while (user in userData.keys()) and (threading.get_native_id() in userData.values()):
             print("Entered Loop")
+
             driver.find_element_by_id(
                 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$').click()
 
@@ -121,31 +119,16 @@ def checkCourse(user, user_password, targetNum, semester, othernumbers=None, dif
 
             message = driver.find_element_by_xpath(
                 '//*[@id="win0divDERIVED_REGFRM1_SS_MESSAGE_LONG$0"]/div').text
-            if message != "Error: Available seats are reserved and you do not meet the reserve capacity criteria.":
-                #fix this if class is closed or something else happens this message will be sent even if they are not enrolled
-                #also find out where threads terminate after sending sms, driver.quit() does not
-                client = Client("ACee67b8e063a7969f04bddacd4c28cfc9",AUTH)
-                message = client.messages.create(
-                    body="Your course selection process was a success! Please double check that everything is correct as this app is still in development. Thanks!",
-                    from_="+14702605227",
-                    to=targetNum
-                )
-                driver.quit()
+            if message != "Error: Class 8081 is full. The Class is full please select Add Another Class to return to step 1.":
+              print("worked")
+              driver.quit()
             else:
                 driver.find_element_by_xpath(
                     '//*[@id="selectedtab"]/a').click() 
             print("Tried to enroll")
             # checks every 5 min
-            if (greeting == False):
-                client = Client("ACee67b8e063a7969f04bddacd4c28cfc9",AUTH)
-                message = client.messages.create(
-                    body="Your course selection process is working fine! If you ever want to cancel this automation request, simply visit the Enroll page to stop. Thanks for using MacEnroll!",
-                    from_="+14702605227",
-                    to=targetNum
-                )
-                greeting = True
-            time.sleep(300)
-        driver.quit()
+            time.sleep(50)
+            
     except:
         del userData[user]
         client = Client("ACee67b8e063a7969f04bddacd4c28cfc9",AUTH)
@@ -161,6 +144,7 @@ class Courses(Resource):
     def get(self, target_user=None):
         if(target_user):
             return target_user in userData.keys()
+            #need to either save phonenumbers with macID's or create database to store all info, bc dont have access to numbers outside of thread
         else:
             active_threads = threading.active_count() - 2
             return { "active threads" : active_threads, 
@@ -179,19 +163,20 @@ class Courses(Resource):
                     difference = (b-a).total_seconds()
             
                     t = threading.Thread(target=checkCourse, args=(
-                        args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"], difference, ))
+                        args["user"], args["pass"], args["target_num"], args["semester"], difference, ))
                     t.start()
                     userData[args["user"]] = t.native_id
                     return "new thread created", 201
                 except:
+                    #instead of this feild validation so everything coming in is already correct
                     return "Something went wrong, make sure all time values are filled out!", 400
 
-        elif(args["time"] == None):
+        else:
             if (args["user"] in userData.keys()):
                 return "You have already registered a course", 200
             else:
                 t = threading.Thread(target=checkCourse, args=(
-                    args["user"], args["pass"], args["target_num"], args["semester"], args["othernumbers"]))
+                    args["user"], args["pass"], args["target_num"], args["semester"]))
                 t.start()       
                 userData[args["user"]] = t.native_id
                 return "new thread created", 201 
@@ -206,7 +191,7 @@ class Courses(Resource):
             for key in userData:
                 if key == target_user:
                     del userData[target_user]
-                    return 204
+                    return 204 
                 else:
                     return "You have no current checks in place", 409
         

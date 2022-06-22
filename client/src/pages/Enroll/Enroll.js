@@ -26,7 +26,7 @@ const Enroll = ({ shift }) => {
       othernumbers: info.othernumbers,
     });
     return axios
-      .post("http://192.168.86.73:80/courses", {
+      .post("http://172.17.137.120:80/courses", {
         user: data.username,
         pass: data.password,
         target_num: data.phonenumber,
@@ -49,13 +49,10 @@ const Enroll = ({ shift }) => {
         <Section>
           <Container>
             <div class="card">
-              <AutoForm updateData={updateData}></AutoForm>
-              {/* <img src={Bear} className="bear" id="bear" alt="bear"></img> */}
+              <AutoForm updateData={updateData} />
             </div>
             <div class="card">
-              <EditForm>
-
-              </EditForm>
+              <EditForm />
             </div>
           </Container>
         </Section>
@@ -82,38 +79,10 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-  // @media screen and (max-height: 768px) {
-  //   grid-template-columns: 1fr;
-  // }
+  /* @media screen and (max-height: 768px) {
+    grid-template-columns: 1fr;
+  } */
   `
-
-const LeftContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color:  #AC3B61;
-    border-radius: 5px;
-    padding: 50px;
-    margin: 10px;
-    h1 {
-      margin-bottom: 1rem;
-      font-size: clamp(1.5rem, 6vw, 2rem);
-    }
-    p {
-      margin-bottom: 2rem;
-      line-height: 1.8;
-    }
-`
-
-const RightContainer = styled.div`
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color:  #AC3B61;
-    border-radius: 5px;
-    float:right;
-`
 
 
 export default Enroll;

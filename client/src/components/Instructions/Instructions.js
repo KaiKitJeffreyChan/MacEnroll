@@ -35,13 +35,14 @@ const Instructions = ({
   );
 };
 
+
+
 const Section = styled.section`
   width: 100%;
   height: 100%;
   padding: 3rem 3rem;
   transition: 350ms;
-  /* make it so you can pass in colors to component for what it fades into */
-  
+
   background-image: ${({ changeBack }) =>
     changeBack ? "white" : "linear-gradient(to top, #fff 0%, #fcd7ea 80%)"};
 `;
